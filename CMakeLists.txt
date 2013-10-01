@@ -6,6 +6,7 @@ project(decklink_capture)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   roscpp
+  decklink_sdk
 )
 
 ## System dependencies are found with CMake's conventions
@@ -51,9 +52,9 @@ find_package(catkin REQUIRED COMPONENTS
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES decklink_capture
-#  CATKIN_DEPENDS roscpp
+  INCLUDE_DIRS include
+  LIBRARIES decklinkcapture
+  CATKIN_DEPENDS roscpp decklink_sdk
 #  DEPENDS system_lib
 )
 
@@ -66,24 +67,26 @@ catkin_package(
 # include_directories(include)
 include_directories(
   ${catkin_INCLUDE_DIRS}
+  include
 )
 
 ## Declare a cpp library
-# add_library(decklink_capture
-#   src/${PROJECT_NAME}/decklink_capture.cpp
-# )
+add_library(decklinkcapture
+  src/DeckLinkCapture.cpp
+)
 
 ## Declare a cpp executable
-# add_executable(decklink_capture_node src/decklink_capture_node.cpp)
+add_executable(decklinkcapture_streamer src/DeckLinkCaptureStreamer.cpp src/main.cpp)
 
 ## Add cmake target dependencies of the executable/library
 ## as an example, message headers may need to be generated before nodes
 # add_dependencies(decklink_capture_node decklink_capture_generate_messages_cpp)
 
 ## Specify libraries to link a library or executable target against
-# target_link_libraries(decklink_capture_node
-#   ${catkin_LIBRARIES}
-# )
+target_link_libraries(decklinkcapture_streamer
+  ${catkin_LIBRARIES}
+  decklinkcapture
+)
 
 #############
 ## Install ##
