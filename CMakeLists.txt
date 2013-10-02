@@ -6,6 +6,7 @@ project(decklink_capture)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   roscpp
+  sensor_msgs
   decklink_sdk
 )
 
@@ -83,6 +84,9 @@ add_executable(decklinkcapture_streamer src/DeckLinkCaptureStreamer.cpp src/main
 # add_dependencies(decklink_capture_node decklink_capture_generate_messages_cpp)
 
 ## Specify libraries to link a library or executable target against
+target_link_libraries(decklinkcapture
+  decklink_sdk
+)
 target_link_libraries(decklinkcapture_streamer
   ${catkin_LIBRARIES}
   decklinkcapture

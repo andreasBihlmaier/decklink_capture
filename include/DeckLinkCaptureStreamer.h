@@ -2,8 +2,11 @@
 #define _DECK_LINK_CAPTURE_STREAMER_H_
 
 // system includes
+#include <queue>
 
 // library includes
+#include "ros/ros.h"
+#include <boost/thread/thread.hpp>
 
 // custom includes
 
@@ -26,23 +29,38 @@ class DeckLinkCaptureStreamer
 
 
     // constructors
-    DeckLinkCaptureStreamer();
+    DeckLinkCaptureStreamer(const std::string& p_imagePublishTopic);
 
     // overwritten methods
 
     // methods
     bool init();
-    void newFrame(long unsigned frameCount, void* rawFrame, unsigned rawFrameRowbytes, unsigned rawFrameHeight);
+    void newFrame(long unsigned frameCount, void* rawFrame, unsigned rawFrameWidth, unsigned rawFrameHeight, unsigned bytesPerPixel);
 
     // variables
 
 
   private:
     // methods
+    void publishImages();
 
     // variables
-    DeckLinkCapture* m_deckLinkCapture;
+    std::string m_imagePublishTopic;
 
+    DeckLinkCapture* m_deckLinkCapture;
+    unsigned m_frameWidth;
+    unsigned m_frameHeight;
+    unsigned m_frameBytesPerPixel;
+    unsigned m_frameByteSize;
+    unsigned m_frameCount; // protected by m_imageQueueMutex
+
+    boost::mutex m_imageQueueMutex;
+    boost::condition_variable m_imageQueueCondition;
+    std::queue<void*> m_imageQueue;
+    boost::thread* m_publishThread;
+
+    ros::NodeHandle m_nodeHandle;
+    ros::Publisher m_imagePublisher;
 
 };
 

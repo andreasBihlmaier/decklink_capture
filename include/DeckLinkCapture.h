@@ -23,7 +23,7 @@ class DeckLinkCapture
     // enums
 
     // typedefs
-    typedef boost::function<void(long unsigned frameCount, void* rawFrame, unsigned rawFrameRowbytes, unsigned rawFrameHeight)> DeckLinkCaptureCallbackType;
+    typedef boost::function<void(long unsigned frameCount, void* rawFrame, unsigned rawFrameWidth, unsigned rawFrameHeight, unsigned bytesPerPixel)> DeckLinkCaptureCallbackType;
 
     // const static member variables
  
