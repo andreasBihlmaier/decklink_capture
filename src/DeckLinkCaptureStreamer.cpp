@@ -80,6 +80,8 @@ DeckLinkCaptureStreamer::publishImages()
       m_imageQueue.pop();
     }
 
+    // TODO deinterlace
+
     sensor_msgs::Image image;
     image.header.seq = m_frameCount;
     image.header.stamp = ros::Time::now();
