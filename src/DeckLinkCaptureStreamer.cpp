@@ -34,6 +34,8 @@ DeckLinkCaptureStreamer::init()
   }
 
   m_deckLinkCapture->setCallback(boost::bind(&DeckLinkCaptureStreamer::newFrame, this, _1, _2, _3, _4, _5));
+
+  return true;
 }
 
 void

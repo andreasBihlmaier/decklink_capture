@@ -37,6 +37,8 @@ DeckLinkCapture::VideoInputFrameArrived(IDeckLinkVideoInputFrame* videoFrame, ID
     videoFrame->GetBytes(&rawFrame);
     m_callback(m_frameCount, rawFrame, videoFrame->GetWidth(), videoFrame->GetHeight(), videoFrame->GetRowBytes() / videoFrame->GetWidth());
   }
+
+  return S_OK;
 }
 
 bool
