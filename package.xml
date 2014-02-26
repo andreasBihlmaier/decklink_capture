@@ -2,7 +2,7 @@
 <package>
   <name>decklink_capture</name>
   <version>0.0.0</version>
-  <description>The decklink_capture package</description>
+  <description>Stream images captured by Blackmagic DeckLink using its SDK to ROS as sensor_msgs/Image</description>
   <maintainer email="andreas.bihlmaier@gmx.de">Andreas Bihlmaier</maintainer>
   <license>MIT</license>
 
