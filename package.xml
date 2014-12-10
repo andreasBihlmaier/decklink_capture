@@ -33,9 +33,13 @@
   <build_depend>roscpp</build_depend>
   <build_depend>decklink_sdk</build_depend>
   <build_depend>sensor_msgs</build_depend>
+  <build_depend>image_transport</build_depend>
+  <build_depend>camera_info_manager</build_depend>
   <run_depend>sensor_msgs</run_depend>
   <run_depend>decklink_sdk</run_depend>
   <run_depend>roscpp</run_depend>
+  <run_depend>image_transport</run_depend>
+  <run_depend>camera_info_manager</run_depend>
 
 
   <!-- The export tag contains other, unspecified, tags -->

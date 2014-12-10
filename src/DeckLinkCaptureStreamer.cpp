@@ -11,8 +11,8 @@
 
 
 /*---------------------------------- public: -----------------------------{{{-*/
-DeckLinkCaptureStreamer::DeckLinkCaptureStreamer(const std::string& p_imagePublishTopic)
-  :m_imagePublishTopic(p_imagePublishTopic),
+DeckLinkCaptureStreamer::DeckLinkCaptureStreamer()
+  :m_cameraName("decklink"),
    m_deckLinkCapture(NULL),
    m_frameWidth(0),
    m_frameHeight(0),
@@ -24,7 +24,10 @@ DeckLinkCaptureStreamer::DeckLinkCaptureStreamer(const std::string& p_imagePubli
 bool
 DeckLinkCaptureStreamer::init()
 {
-  m_imagePublisher = m_nodeHandle.advertise<sensor_msgs::Image>(m_imagePublishTopic, 5);
+  m_imageTransport = new image_transport::ImageTransport(m_nodeHandle);
+  m_cameraInfoManager = new camera_info_manager::CameraInfoManager(m_nodeHandle);
+  m_cameraInfoManager->setCameraName(m_cameraName);
+  m_imagePublisher = m_imageTransport->advertiseCamera("image_raw", 1);
   m_publishThread = new boost::thread(boost::bind(&DeckLinkCaptureStreamer::publishImages, this));
 
   m_deckLinkCapture = new DeckLinkCapture();
@@ -93,7 +96,7 @@ DeckLinkCaptureStreamer::publishImages()
     //image.is_bigendian
     image.step = m_frameWidth * m_frameBytesPerPixel;
     image.data = std::vector<uint8_t>((uint8_t*)frameRaw, ((uint8_t*)frameRaw) + m_frameByteSize);
-    m_imagePublisher.publish(image);
+    m_imagePublisher.publish(image, m_cameraInfoManager->getCameraInfo());
 
     free(frameRaw);
   }

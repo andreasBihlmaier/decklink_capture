@@ -8,6 +8,8 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   sensor_msgs
   decklink_sdk
+  image_transport
+  camera_info_manager
 )
 
 ## System dependencies are found with CMake's conventions

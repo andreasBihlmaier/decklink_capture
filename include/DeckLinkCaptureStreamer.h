@@ -7,6 +7,8 @@
 // library includes
 #include "ros/ros.h"
 #include <boost/thread/thread.hpp>
+#include <image_transport/image_transport.h>
+#include <camera_info_manager/camera_info_manager.h>
 
 // custom includes
 
@@ -29,7 +31,7 @@ class DeckLinkCaptureStreamer
 
 
     // constructors
-    DeckLinkCaptureStreamer(const std::string& p_imagePublishTopic);
+    DeckLinkCaptureStreamer();
 
     // overwritten methods
 
@@ -45,7 +47,7 @@ class DeckLinkCaptureStreamer
     void publishImages();
 
     // variables
-    std::string m_imagePublishTopic;
+    std::string m_cameraName;
 
     DeckLinkCapture* m_deckLinkCapture;
     unsigned m_frameWidth;
@@ -60,7 +62,9 @@ class DeckLinkCaptureStreamer
     boost::thread* m_publishThread;
 
     ros::NodeHandle m_nodeHandle;
-    ros::Publisher m_imagePublisher;
+    image_transport::CameraPublisher m_imagePublisher;
+    image_transport::ImageTransport* m_imageTransport;
+    camera_info_manager::CameraInfoManager* m_cameraInfoManager;
 
 };
 
