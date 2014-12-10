@@ -57,7 +57,7 @@ DeckLinkCapture::init()
   }
 	deckLinkInput->SetCallback(this);
 
-	BMDDisplayMode displayMode = bmdModeHD1080i6000;
+	BMDDisplayMode displayMode = bmdModeHD720p60;
 	BMDPixelFormat pixelFormat = bmdFormat8BitYUV;
   if (deckLinkInput->EnableVideoInput(displayMode, pixelFormat, 0) != S_OK) {
     fprintf(stderr, "init(): EnableVideoInput() failed\n");
