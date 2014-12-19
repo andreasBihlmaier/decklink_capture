@@ -29,6 +29,10 @@ DeckLinkCaptureStreamer::init()
   m_cameraInfoManager->setCameraName(m_cameraName);
   m_imagePublisher = m_imageTransport->advertiseCamera("image_raw", 1);
   m_publishThread = new boost::thread(boost::bind(&DeckLinkCaptureStreamer::publishImages, this));
+  ros::NodeHandle privateNodeHandle("~");
+  if (privateNodeHandle.hasParam("frame_id")) {
+    privateNodeHandle.getParam("frame_id", m_frameId);
+  }
 
   m_deckLinkCapture = new DeckLinkCapture();
   if (!m_deckLinkCapture->init()) {
@@ -85,18 +89,20 @@ DeckLinkCaptureStreamer::publishImages()
       m_imageQueue.pop();
     }
 
-    // TODO deinterlace
-
     sensor_msgs::Image image;
     image.header.seq = m_frameCount;
     image.header.stamp = ros::Time::now();
+    image.header.frame_id = m_frameId;
     image.height = m_frameHeight;
     image.width = m_frameWidth;
     image.encoding = sensor_msgs::image_encodings::YUV422;
     //image.is_bigendian
     image.step = m_frameWidth * m_frameBytesPerPixel;
     image.data = std::vector<uint8_t>((uint8_t*)frameRaw, ((uint8_t*)frameRaw) + m_frameByteSize);
-    m_imagePublisher.publish(image, m_cameraInfoManager->getCameraInfo());
+    sensor_msgs::CameraInfo cameraInfo = m_cameraInfoManager->getCameraInfo();
+    cameraInfo.header.stamp = ros::Time::now();
+    cameraInfo.header.frame_id = m_frameId;
+    m_imagePublisher.publish(image, cameraInfo);
 
     free(frameRaw);
   }

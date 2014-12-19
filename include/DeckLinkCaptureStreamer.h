@@ -55,6 +55,7 @@ class DeckLinkCaptureStreamer
     unsigned m_frameBytesPerPixel;
     unsigned m_frameByteSize;
     unsigned m_frameCount; // protected by m_imageQueueMutex
+    std::string m_frameId;
 
     boost::mutex m_imageQueueMutex;
     boost::condition_variable m_imageQueueCondition;
