@@ -100,8 +100,8 @@ DeckLinkCaptureStreamer::publishImages()
     image.step = m_frameWidth * m_frameBytesPerPixel;
     image.data = std::vector<uint8_t>((uint8_t*)frameRaw, ((uint8_t*)frameRaw) + m_frameByteSize);
     sensor_msgs::CameraInfo cameraInfo = m_cameraInfoManager->getCameraInfo();
-    cameraInfo.header.stamp = ros::Time::now();
-    cameraInfo.header.frame_id = m_frameId;
+    cameraInfo.header.stamp = image.header.stamp;
+    cameraInfo.header.frame_id = image.header.frame_id;
     m_imagePublisher.publish(image, cameraInfo);
 
     free(frameRaw);
